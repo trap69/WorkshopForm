@@ -25,14 +25,12 @@ CLASS Test INHERITS Form:
     DEFINE PRIVATE VARIABLE extendedPriceDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE discountDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE NameTextBox AS System.Windows.Forms.TextBox NO-UNDO.
-    DEFINE PRIVATE VARIABLE DeleteButton AS System.Windows.Forms.Button NO-UNDO.
     DEFINE PRIVATE VARIABLE OrderDataGridView AS System.Windows.Forms.DataGridView NO-UNDO.
     DEFINE PRIVATE VARIABLE qtyDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE priceDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE ordernumDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE orderLineStatusDataGridViewTextBoxColumn AS System.Windows.Forms.DataGridViewTextBoxColumn NO-UNDO.
     DEFINE PRIVATE VARIABLE SalesRepLabel AS System.Windows.Forms.Label NO-UNDO.
-    DEFINE PRIVATE VARIABLE SaveButton AS System.Windows.Forms.Button NO-UNDO.
     
 define buffer  bCustomer for Customer.
         
@@ -83,28 +81,6 @@ define buffer  bCustomer for Customer.
     end method.
     
     
-	/*------------------------------------------------------------------------------
-	 Purpose:
-	 Notes:
-	------------------------------------------------------------------------------*/
-	@VisualDesigner.
-	METHOD PRIVATE VOID DeleteButton_Click( INPUT sender AS System.Object, INPUT e AS System.EventArgs ):
-		
-		find Customer
-             where Customer.Name = string(CustomerListBox:SelectedItem)
-             exclusive-lock.
-             
-        delete Customer.
-        
-        NameTextBox:Text = ''.
-        
-        CustomerListBox:Items:Clear().
-        
-        LoadData().
-		
-		RETURN.
-
-	END METHOD.
 
     /*------------------------------------------------------------------------------
      Purpose:
@@ -135,11 +111,11 @@ define buffer  bCustomer for Customer.
              
           getOrders(bCustomer.CustNum).   
           
-          find OrderLine 
-          where OrderLine.Ordernum = bCustomer.customerNum
-          no-lock.
-              
-           CustomerOrdersBox:Items:Add = getOrders(OrderLine). 
+/*        find OrderLine                                        */
+/*            where OrderLine.Ordernum = bCustomer.customerNum  */
+/*            no-lock.                                          */
+/*                                                              */
+/*           CustomerOrdersBox:Items:Add = getOrders(OrderLine).*/
 /*        find OrderLine                                   */
 /*             where OrderLine.Ordernum = bCustomer.CustNum*/
 /*             no-lock.                                    */
@@ -173,12 +149,10 @@ define buffer  bCustomer for Customer.
         Modifying the contents of this method using a code editor will invalidate any support for this file. */
         THIS-OBJECT:components = NEW System.ComponentModel.Container().
         @VisualDesigner.FormMember (NeedsInitialize="true").
-        DEFINE VARIABLE tableDesc1 AS Progress.Data.TableDesc NO-UNDO.
-        tableDesc1 = NEW Progress.Data.TableDesc("OrderLine").
+        DEFINE VARIABLE tableDesc2 AS Progress.Data.TableDesc NO-UNDO.
+        tableDesc2 = NEW Progress.Data.TableDesc("OrderLine").
         THIS-OBJECT:CustomerListBox = NEW System.Windows.Forms.ListBox().
         THIS-OBJECT:SalesRepLabel = NEW System.Windows.Forms.Label().
-        THIS-OBJECT:SaveButton = NEW System.Windows.Forms.Button().
-        THIS-OBJECT:DeleteButton = NEW System.Windows.Forms.Button().
         THIS-OBJECT:NameTextBox = NEW System.Windows.Forms.TextBox().
         THIS-OBJECT:OrderDataGridView = NEW System.Windows.Forms.DataGridView().
         THIS-OBJECT:ordernumDataGridViewTextBoxColumn = NEW System.Windows.Forms.DataGridViewTextBoxColumn().
@@ -213,28 +187,6 @@ define buffer  bCustomer for Customer.
         THIS-OBJECT:SalesRepLabel:TabIndex = 1.
         THIS-OBJECT:SalesRepLabel:Text = "label1".
         THIS-OBJECT:SalesRepLabel:UseCompatibleTextRendering = TRUE.
-        /*  */
-        /* SaveButton */
-        /*  */
-        THIS-OBJECT:SaveButton:Location = NEW System.Drawing.Point(12, 113).
-        THIS-OBJECT:SaveButton:Name = "SaveButton".
-        THIS-OBJECT:SaveButton:Size = NEW System.Drawing.Size(75, 23).
-        THIS-OBJECT:SaveButton:TabIndex = 2.
-        THIS-OBJECT:SaveButton:Text = "Save".
-        THIS-OBJECT:SaveButton:UseCompatibleTextRendering = TRUE.
-        THIS-OBJECT:SaveButton:UseVisualStyleBackColor = TRUE.
-        THIS-OBJECT:SaveButton:Click:Subscribe(THIS-OBJECT:Savebutton_Click).
-        /*  */
-        /* DeleteButton */
-        /*  */
-        THIS-OBJECT:DeleteButton:Location = NEW System.Drawing.Point(105, 113).
-        THIS-OBJECT:DeleteButton:Name = "DeleteButton".
-        THIS-OBJECT:DeleteButton:Size = NEW System.Drawing.Size(75, 23).
-        THIS-OBJECT:DeleteButton:TabIndex = 3.
-        THIS-OBJECT:DeleteButton:Text = "Delete".
-        THIS-OBJECT:DeleteButton:UseCompatibleTextRendering = TRUE.
-        THIS-OBJECT:DeleteButton:UseVisualStyleBackColor = TRUE.
-        THIS-OBJECT:DeleteButton:Click:Subscribe(THIS-OBJECT:DeleteButton_Click).
         /*  */
         /* NameTextBox */
         /*  */
@@ -323,7 +275,7 @@ define buffer  bCustomer for Customer.
         @VisualDesigner.FormMember (NeedsInitialize="false", InitializeArray="true").
         DEFINE VARIABLE arrayvar1 AS "Progress.Data.TableDesc[]" NO-UNDO.
         arrayvar1 = NEW "Progress.Data.TableDesc[]"(0).
-        tableDesc1:ChildTables = arrayvar1.
+        tableDesc2:ChildTables = arrayvar1.
         @VisualDesigner.FormMember (NeedsInitialize="false", InitializeArray="true").
         DEFINE VARIABLE arrayvar2 AS Progress.Data.ColumnPropDesc EXTENT 8 NO-UNDO.
         arrayvar2[1] = NEW Progress.Data.ColumnPropDesc("Discount", "Discount", Progress.Data.DataType:INTEGER).
@@ -334,8 +286,8 @@ define buffer  bCustomer for Customer.
         arrayvar2[6] = NEW Progress.Data.ColumnPropDesc("Ordernum", "Order Num", Progress.Data.DataType:INTEGER).
         arrayvar2[7] = NEW Progress.Data.ColumnPropDesc("Price", "Price", Progress.Data.DataType:DECIMAL).
         arrayvar2[8] = NEW Progress.Data.ColumnPropDesc("Qty", "Qty", Progress.Data.DataType:INTEGER).
-        tableDesc1:Columns = arrayvar2.
-        THIS-OBJECT:bindingSource1:TableSchema = tableDesc1.
+        tableDesc2:Columns = arrayvar2.
+        THIS-OBJECT:bindingSource1:TableSchema = tableDesc2.
         /*  */
         /* CustomerOrdersBox */
         /*  */
@@ -351,8 +303,6 @@ define buffer  bCustomer for Customer.
         THIS-OBJECT:Controls:Add(THIS-OBJECT:CustomerOrdersBox).
         THIS-OBJECT:Controls:Add(THIS-OBJECT:OrderDataGridView).
         THIS-OBJECT:Controls:Add(THIS-OBJECT:NameTextBox).
-        THIS-OBJECT:Controls:Add(THIS-OBJECT:DeleteButton).
-        THIS-OBJECT:Controls:Add(THIS-OBJECT:SaveButton).
         THIS-OBJECT:Controls:Add(THIS-OBJECT:SalesRepLabel).
         THIS-OBJECT:Controls:Add(THIS-OBJECT:CustomerListBox).
         THIS-OBJECT:Cursor = System.Windows.Forms.Cursors:Default.
@@ -443,26 +393,6 @@ define buffer  bCustomer for Customer.
 
 	END METHOD.
 
-	/*------------------------------------------------------------------------------
-	 Purpose:
-	 Notes:
-	------------------------------------------------------------------------------*/
-	@VisualDesigner.
-	METHOD PRIVATE VOID SaveButton_Click( INPUT sender AS System.Object, INPUT e AS System.EventArgs ):
-		
-		find Customer
-           where Customer.Name = string(CustomerListBox:SelectedItem)
-           exclusive-lock.
-        
-        Customer.Name = NameTextBox:Text.
-        
-        CustomerListBox:Items:Clear().
-        
-        LoadData().
-        
-		RETURN.
-
-	END METHOD.
 
     DESTRUCTOR PUBLIC Test ( ):
 
