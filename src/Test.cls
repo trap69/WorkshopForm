@@ -149,8 +149,8 @@ define buffer  bCustomer for Customer.
         Modifying the contents of this method using a code editor will invalidate any support for this file. */
         THIS-OBJECT:components = NEW System.ComponentModel.Container().
         @VisualDesigner.FormMember (NeedsInitialize="true").
-        DEFINE VARIABLE tableDesc2 AS Progress.Data.TableDesc NO-UNDO.
-        tableDesc2 = NEW Progress.Data.TableDesc("OrderLine").
+        DEFINE VARIABLE tableDesc1 AS Progress.Data.TableDesc NO-UNDO.
+        tableDesc1 = NEW Progress.Data.TableDesc("OrderLine").
         THIS-OBJECT:CustomerListBox = NEW System.Windows.Forms.ListBox().
         THIS-OBJECT:SalesRepLabel = NEW System.Windows.Forms.Label().
         THIS-OBJECT:NameTextBox = NEW System.Windows.Forms.TextBox().
@@ -275,7 +275,7 @@ define buffer  bCustomer for Customer.
         @VisualDesigner.FormMember (NeedsInitialize="false", InitializeArray="true").
         DEFINE VARIABLE arrayvar1 AS "Progress.Data.TableDesc[]" NO-UNDO.
         arrayvar1 = NEW "Progress.Data.TableDesc[]"(0).
-        tableDesc2:ChildTables = arrayvar1.
+        tableDesc1:ChildTables = arrayvar1.
         @VisualDesigner.FormMember (NeedsInitialize="false", InitializeArray="true").
         DEFINE VARIABLE arrayvar2 AS Progress.Data.ColumnPropDesc EXTENT 8 NO-UNDO.
         arrayvar2[1] = NEW Progress.Data.ColumnPropDesc("Discount", "Discount", Progress.Data.DataType:INTEGER).
@@ -286,8 +286,8 @@ define buffer  bCustomer for Customer.
         arrayvar2[6] = NEW Progress.Data.ColumnPropDesc("Ordernum", "Order Num", Progress.Data.DataType:INTEGER).
         arrayvar2[7] = NEW Progress.Data.ColumnPropDesc("Price", "Price", Progress.Data.DataType:DECIMAL).
         arrayvar2[8] = NEW Progress.Data.ColumnPropDesc("Qty", "Qty", Progress.Data.DataType:INTEGER).
-        tableDesc2:Columns = arrayvar2.
-        THIS-OBJECT:bindingSource1:TableSchema = tableDesc2.
+        tableDesc1:Columns = arrayvar2.
+        THIS-OBJECT:bindingSource1:TableSchema = tableDesc1.
         /*  */
         /* CustomerOrdersBox */
         /*  */

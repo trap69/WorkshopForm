@@ -182,7 +182,7 @@ CLASS OrderForm INHERITS Form:
 /*                                                                     */
 /*        OrderLineNumberTextBox:Items:Clear().                        */
 /*                                                                     */
-/*        Close().                                                  */
+        Close().
 /*                                                                     */
         
 /*		RETURN.*/
